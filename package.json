@@ -1,0 +1,56 @@
+{
+  "name": "pimatic-sounds",
+  "description": "Playing mp3 files and tts sentences on Chromecast and Sonos devices (node v8+ only)",
+  "author": {
+    "name": "Bert Gierveld",
+    "email": "gitbertreb@gmail.com",
+    "url": "https://github.com/bertreb"
+  },
+  "main": "pimatic-sounds",
+  "files": [
+    "pimatic-sounds.coffee",
+    "pimatic-sounds-config-schema.coffee",
+    "device-config-schema.coffee",
+    "README.md",
+    "LICENSE",
+    "HISTORY.md",
+    "languages",
+    "initSound.mp3",
+    "content-types.js",
+    "google-speech.js"
+  ],
+  "homepage": "https://github.com/bertreb/pimatic-sounds.git",
+  "keywords": [
+    "pimatic",
+    "sounds",
+    "tts",
+    "chromecast"
+  ],
+  "version": "0.1.20",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bertreb/pimatic-sounds.git"
+  },
+  "configSchema": "pimatic-sounds-config-schema.coffee",
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^3.0.0",
+    "bonjour": "^3.5.0",
+    "castv2-client": "^1.2.0",
+    "lodash": "^4.17.15",
+    "needle": "^2.4.1",
+    "node-gtts": "^2.0.2",
+    "os": "^0.1.1",
+    "path": "^0.12.7",
+    "ping": "^0.2.2",
+    "protobufjs": "^6.8.8",
+    "sonos": "^1.12.6",
+    "util": "^0.12.1"
+  },
+  "peerDependencies": {
+    "pimatic": "0.9.*"
+  },
+  "engines": {
+    "node": ">=8",
+    "npm": ">=2"
+  }
+}
