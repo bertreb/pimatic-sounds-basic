@@ -642,6 +642,7 @@ module.exports = (env) ->
         opts =
           host: @ip
           port: @port
+        @_title = (if _text? then _text else "Pimatic Announcement")
 
         #env.logger.debug "Connecting to gaDevice with opts: " + JSON.stringify(opts,null,2)
         device.connect(opts, (err) =>
@@ -650,9 +651,10 @@ module.exports = (env) ->
             return
           @deviceStatus = on
 
+          
           defaultMetadata =
             metadataType: 0
-            title: "Pimatic Announcement"
+            title: @_title
             #posterUrl: "https://avatars0.githubusercontent.com/u/6502361?v=3&s=400"
             #images: [
             #  { url: "https://avatars0.githubusercontent.com/u/6502361?v=3&s=20" }

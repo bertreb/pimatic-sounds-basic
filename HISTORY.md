@@ -107,3 +107,5 @@
 	* small fix
 * 20201010, v0.1.22
 	* fix duration timer
+* 20201210, v0.1.23
+	* add announcement text
