@@ -609,6 +609,8 @@ module.exports = (env) ->
 
         #@_volume = _vol * 100 if _vol < 1
 
+        @_text = _text
+
         @announcement = true
         @announcementUrl = _url
         @deviceReplayingVolume = @devicePlayingVolume
@@ -642,7 +644,10 @@ module.exports = (env) ->
         opts =
           host: @ip
           port: @port
-        @_title = (if _text? then _text else "Pimatic Announcement")
+
+        @_title = "Pimatic Announcement"
+        if @_text? then @_title = @_text          
+        #env.logger.debug "Announcement title: " + @_title + ", @_text: " + @_text
 
         #env.logger.debug "Connecting to gaDevice with opts: " + JSON.stringify(opts,null,2)
         device.connect(opts, (err) =>
@@ -650,7 +655,6 @@ module.exports = (env) ->
             env.logger.debug "Connect error " + err.message
             return
           @deviceStatus = on
-
           
           defaultMetadata =
             metadataType: 0
@@ -747,6 +751,8 @@ module.exports = (env) ->
                           @setVolume(@deviceReplayingVolume)
                       ).catch((err)=> env.logger.debug "Error in stopCasting " + err)
                     , duration)
+                  else
+                    resolve()
                 )
               )
             )
@@ -1907,7 +1913,7 @@ module.exports = (env) ->
       soundsDevices = _(@framework.deviceManager.devices).values().filter(
         (device) => @_soundsClasses(device.config.class)
       ).value()
-      text = ""
+      text = null
       soundsDevice = null
       match = null
       volume = null
@@ -2108,7 +2114,7 @@ module.exports = (env) ->
           else
             return __("Rule not executed device offline")
         try
-          #env.logger.info "Execute: " +@soundType + ", @textIn"
+          #env.logger.debug "Execute: " +@soundType + ", @textIn" + @textIn
           switch @soundType
             when "text"
               @framework.variableManager.evaluateStringExpression(@textIn).then( (strToLog) =>
@@ -2144,9 +2150,9 @@ module.exports = (env) ->
                     ###
                     env.logger.debug "Sound generated, now casting " + @soundsDevice.media.url
                     @soundsDevice.setAnnouncement(@text)
-                    @soundsDevice.playAnnouncement(@soundsDevice.media.url, Number newVolume, @text, @duration)
+                    @soundsDevice.playAnnouncement(@soundsDevice.media.url, (Number newVolume), @text, @duration)
                     .then(()=>
-                      env.logger.debug 'Playing ' + @soundsDevice.media.url + " with volume " + newVolume + ", and text " + @text
+                      env.logger.debug 'Playing ' + @soundsDevice.media.url + " with volume " + newVolume
                       return __("\"%s\" was played ", @text)
                     ).catch((err)=>
                       env.logger.debug "Error in playAnnouncement: " + err
@@ -2185,8 +2191,8 @@ module.exports = (env) ->
                     #  env.logger.debug "Error: " + err
                     #  return __("\"%s\" was not generated", @text)
                     env.logger.debug "Sound generated, now casting " + @soundsDevice.media.url
-                    @soundsDevice.setAnnouncement(@text)
-                    @soundsDevice.playAnnouncement(@soundsDevice.media.url, Number newVolume, @text, @duration)
+                    #@soundsDevice.setAnnouncement(@text)
+                    @soundsDevice.playAnnouncement(@soundsDevice.media.url, (Number newVolume), @text, @duration)
                     .then(()=>
                       env.logger.debug 'Playing ' + @soundsDevice.media.url + " with volume " + newVolume + ", and text " + @text
                       return __("\"%s\" was played ", @text)

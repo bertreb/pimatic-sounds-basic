@@ -109,3 +109,5 @@
 	* fix duration timer
 * 20201210, v0.1.23
 	* add announcement text
+* 20201217, v0.1.24
+	* add debug for announcement text
